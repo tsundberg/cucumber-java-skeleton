@@ -13,13 +13,13 @@ Git:
     git clone https://github.com/cucumber/cucumber-java-skeleton.git
     cd cucumber-java-skeleton
 
-Or simply [download a zip](https://github.com/cucumber/cucumber-java-skeleton/archive/master.zip) file.
+Or [download a zip](https://github.com/cucumber/cucumber-java-skeleton/archive/master.zip) file.
 
 ## Use Maven
 
 Open a command window and run:
 
-    mvn test
+    ./mvnw test
 
 This runs Cucumber features using the JUnit Platform. The `@Suite` annotation on the `RunCukesTest`
 class tells JUnit Platform to use the Cucumber engine.
@@ -44,7 +44,7 @@ Cucumber options can be overridden using system properties. The most commonly us
 
 Using Maven:
 
-    mvn -Dcucumber.plugin="pretty" -Dcucumber.filter.tags="@smoke" test
+    ./mvnw -Dcucumber.plugin="pretty" -Dcucumber.filter.tags="@smoke" test
 
 Using Gradle:
 
