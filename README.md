@@ -1,7 +1,5 @@
 # Cucumber-Java Skeleton
 
-![](https://travis-ci.org/cucumber/cucumber-java-skeleton.svg)
-
 This is the simplest possible build script setup for Cucumber using Java.
 There is nothing fancy like a webapp or browser testing. All this does is to show you how
 to install and run Cucumber!
@@ -15,11 +13,6 @@ Git:
     git clone https://github.com/cucumber/cucumber-java-skeleton.git
     cd cucumber-java-skeleton
 
-Subversion:
-
-    svn checkout https://github.com/cucumber/cucumber-java-skeleton/trunk cucumber-java-skeleton
-    cd cucumber-java-skeleton
-
 Or simply [download a zip](https://github.com/cucumber/cucumber-java-skeleton/archive/master.zip) file.
 
 ## Use Maven
@@ -28,85 +21,47 @@ Open a command window and run:
 
     mvn test
 
-This runs Cucumber features using Cucumber's JUnit runner. The `@RunWith(Cucumber.class)` annotation on the `RunCukesTest`
-class tells JUnit to kick off Cucumber.
-
-## Use Ant
-
-Open a command window and run:
-
-    ant download
-    ant runcukes
-
-This runs Cucumber features using Cucumber's Command Line Interface (CLI) runner. Note that the `RunCukesTest` junit class is not used at all.
-If you remove it (and the `cucumber-junit` jar dependency), it will run just the same.
+This runs Cucumber features using the JUnit Platform. The `@Suite` annotation on the `RunCukesTest`
+class tells JUnit Platform to use the Cucumber engine.
 
 ## Use Gradle
 
 Open a command window and run:
 
-    gradlew test
+    ./gradlew test
 
-This runs Cucumber features using Cucumber's JUnit runner. The `@RunWith(Cucumber.class)` annotation on the `RunCukesTest`
-class tells JUnit to kick off Cucumber.
+This runs Cucumber features using the JUnit Platform. The `@Suite` annotation on the `RunCukesTest`
+class tells JUnit Platform to use the Cucumber engine.
 
 ## Overriding options
 
-The Cucumber runtime parses command line options to know what features to run, where the glue code lives, what plugins to use etc.
-When you use the JUnit runner, these options are generated from the `@CucumberOptions` annotation on your test.
+Cucumber options can be overridden using system properties. The most commonly used properties are:
 
-Sometimes it can be useful to override these options without changing or recompiling the JUnit class. This can be done with the
-`cucumber.options` system property. The general form is:
+- `cucumber.plugin` — comma-separated list of plugins (e.g. `pretty`, `html:target/report.html`)
+- `cucumber.filter.tags` — tag expression to select scenarios (e.g. `@smoke and not @wip`)
+- `cucumber.features` — path to feature files
+- `cucumber.glue` — package name for step definitions
 
 Using Maven:
 
-    mvn -Dcucumber.options="..." test
-
-Using Ant:
-
-    JAVA_OPTIONS='-Dcucumber.options="..."' ant runcukes
+    mvn -Dcucumber.plugin="pretty" -Dcucumber.filter.tags="@smoke" test
 
 Using Gradle:
 
-    gradlew -Dcucumber.options="..." test
-
-Let's look at some things you can do with `cucumber.options`. Try this:
-
-    -Dcucumber.options="--help"
-
-That should list all the available options.
-
-*IMPORTANT*
-
-When you override options with `-Dcucumber.options`, you will completely override whatever options are hard-coded in
-your `@CucumberOptions` or in the script calling `cucumber.api.cli.Main`. There is one exception to this rule, and that
-is the `--plugin` option. This will not _override_, but _add_ a plugin. The reason for this is to make it easier
-for 3rd party tools (such as [Cucumber Pro](https://cucumber.pro/)) to automatically configure additional plugins by appending arguments to a `cucumber.properties`
-file.
+    ./gradlew -Dcucumber.plugin="pretty" -Dcucumber.filter.tags="@smoke" test
 
 ### Run a subset of Features or Scenarios
 
-Specify a particular scenario by *line* (and use the pretty plugin, which prints the scenario back)
+Specify scenarios by *tag*:
 
-    -Dcucumber.options="classpath:skeleton/belly.feature:4 --plugin pretty"
+    -Dcucumber.filter.tags="@bar"
 
-This works because Maven puts `./src/test/resources` on your `classpath`.
-You can also specify files to run by filesystem path:
+Specify a particular feature file:
 
-    -Dcucumber.options="src/test/resources/skeleton/belly.feature:4 --plugin pretty"
+    -Dcucumber.features="src/test/resources/skeleton/belly.feature"
 
-You can also specify what to run by *tag*:
+### Specify a different plugin
 
-    -Dcucumber.options="--tags @bar --plugin pretty"
+For example an HTML report:
 
-### Running only the scenarios that failed in the previous run
-
-    -Dcucumber.options="@target/rerun.txt"
-
-This works as long as you have the `rerun` formatter enabled.
-
-### Specify a different formatter:
-
-For example a JUnit formatter:
-
-    -Dcucumber.options="--plugin junit:target/cucumber-junit-report.xml"
+    -Dcucumber.plugin="html:target/cucumber-report.html"

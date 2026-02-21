@@ -1,21 +1,25 @@
-apply plugin: 'java'
-
-project.ext {
-    cucumberVersion = '1.2.4'
-    junitVersion = '4.12'
-}
-
-dependencies {
-    testCompile 'info.cukes:cucumber-java:' + cucumberVersion
-    testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
-    testCompile 'junit:junit:' + junitVersion
+plugins {
+    id 'java'
 }
 
 repositories {
     mavenCentral()
 }
 
+java {
+    sourceCompatibility = 25
+    targetCompatibility = 25
+}
+
+dependencies {
+    testImplementation 'io.cucumber:cucumber-java:7.22.1'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.22.1'
+    testImplementation 'org.junit.platform:junit-platform-suite:1.12.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+}
+
 test {
+    useJUnitPlatform()
     testLogging.showStandardStreams = true
     systemProperties System.getProperties()
 }
